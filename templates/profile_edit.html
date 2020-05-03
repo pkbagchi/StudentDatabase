@@ -1,0 +1,273 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+  <style>
+    .content-section {
+        background: #ffffff;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        border-radius: 3px;
+        /* border-radius: 3px;
+        margin-bottom: 20px; */
+        padding: 60px;
+        margin: 10px;
+  }
+    .ex {
+        margin-top: 4.2em;
+    }
+
+    .bg-company {
+      background-color: #2471A3;
+  }
+  </style>
+
+
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-sm bg-company navbar-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand mr-4" href="#">Partha's Blog</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" onclick="myFunction()" href="#">Home</a>
+           
+            
+          </div>
+
+          <div class="navbar-nav">
+            {% if user.is_authenticated %}
+              {% if 'profile_edit' in request.path %}
+              <a class="nav-item nav-link active" href="{% url 'profile_edit' %}">Profile</a>
+              {% else %}
+              <a class="nav-item nav-link" href="{% url 'profile_edit' %}">Profile</a>
+              {% endif %}
+              <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+               {% else %}
+              <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+              <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  {% for message in messages %}
+
+  <div style="margin-top: 3.7em; margin-bottom: -3.7em;">
+    <div class="text-center">
+   
+      <div class="row">
+        <div class="col-md-12">
+    
+          <div class="alert {{ message.tags }} alert-dismissible text-center fade show">
+            {{message}}
+          </div>
+         
+  
+        </div>
+      
+        <script>
+          $(".alert-dismissible").fadeTo(3000, 500).slideUp(0, function(){
+            $(".alert-dismissible").alert('close');
+        });
+        </script>
+    
+        </div>  
+      </div> 
+    </div>
+    
+  </div>
+  
+  {% endfor %}
+  
+  
+
+
+
+  <main role="main" class="container-fluid ex" >
+    <div class="row" >
+        <div class="col-md-4">
+            <div class="content-section">
+                
+                    <img src="{{ userinfo.get_photo_url }}" alt="profile Picture" class="img-thumbnail" height="300px" width="300px">
+                       <br> <br> 
+                    
+                       <button type="button" class="btn btn-danger btn-block " width="300px">Delete Account</button>
+            </div>
+           
+        </div>
+
+        <div class="col-md-8">
+            
+            <div class="content-section">
+                
+                <legend class="border-bottom mb-3">Account Details</legend>
+                <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputName">Name <span style="color:#cf000f">*</span></label>
+                            <input {% if hasinfo and userinfo.user_name|length is not 0 %} value="{{userinfo.user_name}}" {% endif %} type="text" name= 'name' class="form-control" placeholder="Your Name" required>
+                        </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Email <span style="color:#cf000f">*</span></label>
+                        <input value="{{userinfo.user.email}}" type="email" class="form-control" id="inputEmail4" placeholder="Email" disabled>
+                      </div>
+                      
+                    </div>
+                   
+                   
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputCity">Phone Number <span style="color:#cf000f">*</span></label>
+                          <input {% if hasinfo and userinfo.user_phone|length is not 0%} value="{{userinfo.user_phone}}" {% endif %} name="phone" type="text" class="form-control" id="inputPhoneNo" placeholder="ex. 01XXX-XXXXXX" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            
+                            <label for="inputCity">Your Picture</label>
+                            <div class="custom-file">
+                                <input name="img" type="file" class="custom-file-input" id="inputGroupFile01">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                               
+                        </div>
+                        <div class="form-group col-md-2">
+                          <label for="inputZip">Blood Group <span style="color:#cf000f">*</span></label>
+                          <select name="blood" id="inputBloodgroup" class="form-control">
+                            {% if hasinfo and userinfo.user_bloodGroup|length is not 0 %}
+                            <option selected>{{ userinfo.user_bloodGroup }}</option>
+                            {% else %}
+                            <option selected>Choose...</option>
+                            {% endif %}
+                            <option>A+</option>
+                            <option>A-</option>
+                            <option>B+</option>
+                            <option>B-</option>
+                            <option>AB+</option>
+                            <option>AB-</option>
+                            
+                          </select>
+                          
+                        </div>
+                        <div class="form-group col-md-2">
+                          <label for="inputAddress">Gender <span style="color:#cf000f">*</span></label>
+                          <select   name="gender" id="inputBloodgroup" class="form-control" required>
+                            {% if hasinfo and userinfo.user_gender|length is not 0%}
+                            <option selected>{{userinfo.user_gender}}</option>
+                            {% else %}
+                            <option selected>Choose...</option>
+                            {% endif %}
+                            <option>Male</option>
+                            <option>Female</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-md-10">
+                          <label for="inputAddress">Address <span style="color:#cf000f">*</span></label>
+                          <input {% if hasinfo and userinfo.user_address|length is not 0 %} value="{{userinfo.user_address}}" {% endif %} name="address" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                        </div>
+                      </div>
+
+                     
+
+
+
+
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">City <span style="color:#cf000f">*</span></label>
+                        <input {% if hasinfo and userinfo.user_state|length is not 0  %} value="{{userinfo.user_city}}"  {% endif %} name="city" type="text" class="form-control" id="inputCity" required>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputState">State <span style="color:#cf000f">*</span></label>
+                        <select  name="state" id="inputState" class="form-control" required>
+                          {% if hasinfo and userinfo.user_state|length is not 0 %}
+                          <option selected>{{userinfo.user_state}}</option>
+                          {% else %}
+                          <option selected>Choose...</option>
+                          {% endif %}
+                          <option>Dhaka</option>
+                          <option>Rajshahi</option>
+                          <option>Bogura</option>
+                          <option>Cumilla</option>
+                          <option>Chittagong</option>
+                          <option>Khulna</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label for="inputZip">Zip <span style="color:#cf000f">*</span></label>
+                        <input {% if hasinfo and userinfo.user_zip|length is not 0%} value="{{userinfo.user_zip}}" {% endif %} name="zip" type="text" class="form-control" id="inputZip" required>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">School <span style="color:#cf000f">*</span></label>
+                        <input {% if hasinfo and userinfo.user_school|length is not 0 %} value="{{userinfo.user_school}}" {% endif %}  name="school" type="text" class="form-control" id="inputUniversity" placeholder="Your school name" required>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">College <span style="color:#cf000f">*</span></label>
+                        <input {% if hasinfo and userinfo.user_college|length is not 0%} value="{{userinfo.user_college}}"{% endif %} name="college" type="text" class="form-control" id="inputDepartment" placeholder="Your college name" required>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">University <span style="color:#cf000f">*</span></label>
+                        <input {% if hasinfo and userinfo.user_university|length is not 0 %} value="{{userinfo.user_university}}"  {% endif %} name="university" type="text" class="form-control" id="inputUniversity" placeholder="Your Varsity name" required>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">Department <span style="color:#cf000f">*</span></label>
+                        <input {% if hasinfo and userinfo.user_department|length is not 0 %} value="{{userinfo.user_department}}" {% endif %} name="department" type="text" class="form-control" id="inputDepartment" placeholder="ex. B.Sc in CSE" required>
+                      </div>
+                      
+                      <label for="basic-url">Your Facebook Id <span style="color:#cf000f">*</span></label>
+                        <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">https://www.facebook.com/</span>
+                        </div>
+                        <input {% if hasinfo and userinfo.user_fbId|length is not 0%} value="{{userinfo.user_fbId}}" {% endif %} name="facebook" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" required>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="exampleFormControlTextarea1">Your bio <span style="color:#cf000f">*</span></label>
+                            
+                            <textarea  name="textarea" class="form-control" id="exampleFormControlTextarea1" rows="5" required>{% if hasinfo and userinfo.user_bio|length is not 0 %}{{userinfo.user_bio}}{%endif%}
+                            </textarea>
+                          </div>
+                      
+                    </div>
+
+                    
+                   
+                    <button name="submit_btn" type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+            </div>
+        </div>
+    
+    </div>
+</main>
+ <br>
+
+
+ <script>
+     
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();   
+    });
+    function myFunction() {
+    alert("Hey, {{user.username}}! Please Fill up this form. If Already Done. Please click submit button.");
+    }
+  </script>
+  
+</body>
+</html>

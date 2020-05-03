@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block home %}
+
+<div class="container-fluid">
+  <form method="POST">
+    {% csrf_token %}
+    <input class="form-control" name="search" type="text" value='{{ request.POST.search }}'  placeholder=" Type something to search list items...">
+     
+      <button type="submit" name="btn-search" class="btn btn-info mt-2">Search</button>
+    
+  </form>
+  
+</div>
+
+<legend class="container-fluid border-bottom mb-3 mt-3"> Student List. </legend>
+<div class="flex-container container-fluid">
+  
+  {% if check %}
+  {% for obj in query %}
+  <a href="{% url 'details' obj.slug %}">
+  <div class="flip-card content shadow">
+      <div class="flip-card-inner">
+        <div class="flip-card-front shadow-lg ">
+          <img src="{{ obj.get_photo_url }}" alt="Avatar" style="width:240px;height:275px;">
+        </div>
+        <div class="flip-card-back">
+            <br><br>
+          <h2>Name</h2> 
+          <p>Architect & Engineer</p> 
+          <p>We love that guy</p>
+        </div>
+      </div>
+    </div>
+  </a>
+{% endfor %}
+  {% endif %}
+
+    {% for obj in query %}
+    <a href="{% url 'details' obj.slug %}">
+    <div class="flip-card content shadow">
+        <div class="flip-card-inner">
+          <div class="flip-card-front shadow-lg ">
+            <img src="{{ obj.get_photo_url }}" alt="Avatar" style="width:240px;height:275px;">
+          </div>
+          <div class="flip-card-back">
+              <br><br>
+            <h5>{{obj.user_name}}</h5> 
+            <p>{{obj.user_department}}</p> 
+            <p>{{obj.user_state}}</p>
+            <br>
+            <h5>{{obj.user_gender}}</h5>
+          </div>
+        </div>
+      </div>
+    </a>
+ {% endfor %}
+
+</div>
+
+<div class="container-fluid">
+  <br><br>
+  <div class="row">
+    <div class="col-md-4">
+        {% if query.has_previous %}
+        <a href="?page={{ query.previous_page_number }}" class="btn btn-info px-3 ">Page
+            {{ query.previous_page_number }}</a>{%endif%}
+    </div>
+  
+  
+    <div class="col-md-4">
+  
+    </div>
+  
+  
+    <div class="col-md-4">
+        {% if query.has_next %}
+        <a href="?page={{ query.next_page_number }}" class="btn btn-info px-4 float-right">Page
+            {{ query.next_page_number }}</a>{%endif%}
+  
+    </div>
+  
+  
+  
+  </div>
+</div>
+
+
+
+{% endblock %}

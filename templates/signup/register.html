@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block signup %}
+<div id="container-register">
+    <div id="title">
+        <i class="material-icons lock">lock</i> Register
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="input">
+            <div class="input-addon">
+                <i class="material-icons">email</i>
+            </div>
+            <input name="email" id="email" placeholder="Email" type="email" required class="validate" autocomplete="off">
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="input">
+            <div class="input-addon">
+                <i class="material-icons">face</i>
+            </div>
+            <input name="username" id="username" placeholder="Username" type="text" required class="validate" autocomplete="off">
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="input">
+            <div class="input-addon">
+                <i class="material-icons">vpn_key</i>
+            </div>
+            <input name="password" id="password" placeholder="Password" type="password" required class="validate" autocomplete="off">
+        </div>
+
+        <br>
+
+        <input name="btn-reg" type="submit" value="Register" />
+    </form>
+
+    
+
+    <div class="register">
+        <span style="color: #657575">Do you already have an account?</span>
+        <a href="{% url 'login' %}"><button id="register-link">Log In here</button></a>
+    </div>
+</div>
+<br><br>
+{% endblock %}

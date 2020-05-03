@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'profilehome.css' %}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'signup.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+  <style>
+    .bg-company {
+      background-color: #2471A3;
+  }
+  </style>
+
+
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-sm bg-company navbar-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand mr-4" href="#">Partha's Blog</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          <div class="navbar-nav mr-auto">
+            {% if user.is_authenticated %}
+            {% if 'home' in request.path %}
+            <a class="nav-item nav-link active"  href="{% url 'home' %}">Home</a>
+            {% else %}
+            <a class="nav-item nav-link"  href="{% url 'home' %}">Home</a>
+            {% endif %}
+            {% endif %}
+            
+          </div>
+        
+          <div class="navbar-nav">
+            {% if user.is_authenticated %}
+              {% if 'profile_edit' in request.path %}
+              <a class="nav-item nav-link active" href="{% url 'profile_edit' %}">Profile</a>
+              {% else %}
+              <a class="nav-item nav-link" href="{% url 'profile_edit' %}">Profile</a>
+              {% endif %}
+              <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+               {% else %}
+               {% if 'login' in request.path %}
+              <a class="nav-item active nav-link" href="{% url 'login' %}">Login</a>
+              {% else %}
+              <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+              {% endif %}
+              {% if 'register' in request.path %}
+              <a class="nav-item active nav-link" href="{% url 'register' %}">Register</a>
+              {% else %}
+              <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+              {% endif %}
+             {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  {% for message in messages %}
+
+<div style="margin-top: 3.7em; margin-bottom: -3.7em;">
+  <div class="text-center">
+ 
+    <div class="row">
+      <div class="col-md-12">
+  
+        <div class="alert {{ message.tags }} alert-dismissible text-center fade show">
+        {{message}}
+        </div>
+       
+
+      </div>
+    
+      <script>
+        $(".alert-dismissible").fadeTo(3000, 500).slideUp(0, function(){
+          $(".alert-dismissible").alert('close');
+      });
+      </script>
+  
+      </div>  
+    </div> 
+  </div>
+  
+</div>
+
+{% endfor %}
+
+
+
+  {% block profile_edit %}
+  {% endblock %}
+  <div style="margin-top: 4.5em;">
+  {% block home %}
+  {% endblock %}
+  </div>
+  
+
+  <div style="margin-top: 7.5em;">
+    {% block signup %}
+    {% endblock %}
+  </div>
+
+
+  <script>
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();   
+    });
+  </script>
+   
+ 
+  
+</body>
+</html>
