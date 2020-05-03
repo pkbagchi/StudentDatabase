@@ -19,24 +19,25 @@ def profile_edit(request):
     
     hasinfo = True
     click = False
-    user = User.objects.get(username=request.user)
+    user = User.objects.get(username=request.user.username)
     try:
         userinfo = UserInfo.objects.get(user = user)
     except:
         hasinfo = False
         userinfo = UserInfo()
         userinfo.user = user
+        
     finally:
         if request.method == 'POST' and 'submit_btn' in request.POST:
             userinfo.slug = user.username
-            userinfo.user_name = request.POST.get('name')
-            userinfo.user_phone =  request.POST.get('phone')
+            userinfo.user_name = request.POST.get('name').strip()
+            userinfo.user_phone =  request.POST.get('phone').strip()
             userinfo.user_bloodGroup =  request.POST.get('blood')
             userinfo.user_gender =  request.POST.get('gender')
             userinfo.user_address =  request.POST.get('address').strip()
-            userinfo.user_city =  request.POST.get('city')
+            userinfo.user_city =  request.POST.get('city').strip()
             userinfo.user_state =  request.POST.get('state')
-            userinfo.user_zip =  request.POST.get('zip')
+            userinfo.user_zip =  request.POST.get('zip').strip()
             userinfo.user_school =  request.POST.get('school').strip()
             userinfo.user_college =  request.POST.get('college').strip()
             userinfo.user_university =  request.POST.get('university').strip()
@@ -103,8 +104,10 @@ def home(request):
 def details_view(request, slug):
     try:
         details_obj = UserInfo.objects.get(slug = slug)
+        if slug == str(request.user.username):
+            return redirect('profile_edit')
     except:
-        if slug == str(request.user):
+        if slug == str(request.user.username):
             return redirect('profile_edit')
         else:
             raise Http404("No User Found!")

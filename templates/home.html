@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load humanize %} 
 {% block home %}
 
 <div class="container-fluid">
@@ -26,9 +26,11 @@
         </div>
         <div class="flip-card-back">
             <br><br>
-          <h2>Name</h2> 
-          <p>Architect & Engineer</p> 
-          <p>We love that guy</p>
+          <h2>{{obj.user_name | title}}</h2> 
+          <p>{{obj.user_department}}</p> 
+          <p>{{obj.user_state}}</p>
+          <br>
+          <h5>{{obj.user_gender}}</h5>
         </div>
       </div>
     </div>
@@ -45,7 +47,7 @@
           </div>
           <div class="flip-card-back">
               <br><br>
-            <h5>{{obj.user_name}}</h5> 
+            <h5>{{obj.user_name | title}}</h5> 
             <p>{{obj.user_department}}</p> 
             <p>{{obj.user_state}}</p>
             <br>

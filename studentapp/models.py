@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from io import BytesIO
 from PIL import Image
 from django.core.files import File
+from datetime import datetime
 # Create your models here.
 
 def compress(image):
@@ -35,6 +36,7 @@ class UserInfo(models.Model):
     user_department = models.CharField(max_length=30, blank=True, null=True)
     user_fbId = models.CharField(max_length=30, blank=True, null=True)
     user_bio = models.TextField(blank=True, null=True)
+    date = models.DateField(default=datetime.now)
     
     
     
