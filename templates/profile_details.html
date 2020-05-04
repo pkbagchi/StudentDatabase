@@ -20,7 +20,8 @@
         <div class="col-md-4">
             <h5 style="font-family: sans-serif; color: red;"><i class="fa fa-eercast" aria-hidden="true" style="font-size:26px;margin-right:.25em;margin-top: 1.5em;"></i><b>{{details_obj.user_bloodGroup}}</b></h5>
             <h5 style="font-family: sans-serif; color: blue;"><i class="fa fa-facebook-official" aria-hidden="true" style="font-size:26px;margin-right:.25em;margin-top: .5em;"></i>/{{details_obj.user_fbId}}</h5>
-                <small>Last seen {{user.last_login | timesince }} ago</small>
+                <small>Last seen {{user.last_login | timesince }} ago</small><br>
+                <small>Joined {{details_obj.date}}</small>
         </div>
         <div class="col-md-8">
             <legend class="border-bottom mb-4"><i class='fa fa-user-circle' style='font-size:24px;margin-right: .5em;'></i>About</legend>
