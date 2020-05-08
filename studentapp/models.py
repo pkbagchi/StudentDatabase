@@ -37,6 +37,7 @@ class UserInfo(models.Model):
     user_fbId = models.CharField(max_length=30, blank=True, null=True)
     user_bio = models.TextField(blank=True, null=True)
     date = models.DateField(default=datetime.now)
+    bol_field = models.CharField(max_length=30, blank=True, null=True)
     
     
     

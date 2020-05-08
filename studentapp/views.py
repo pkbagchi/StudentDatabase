@@ -44,7 +44,7 @@ def profile_edit(request):
             userinfo.user_department =  request.POST.get('department').strip()
             userinfo.user_fbId =  request.POST.get('facebook').strip()
             userinfo.user_bio =  request.POST.get('textarea').strip()
-            
+            userinfo.bol_field = True
             click = True
 
             if 'img' in request.FILES :
@@ -58,6 +58,7 @@ def profile_edit(request):
         
 
         hasinfo = True
+        
         userinfo.save()
         
 
@@ -91,7 +92,7 @@ def home(request):
             else :
                 pass
     else:
-        query = UserInfo.objects.all().order_by('-id')
+        query = UserInfo.objects.filter(bol_field__iexact = 'True').order_by('-id')
         
     paginator = Paginator(query, 1)  # Show 10 obj per page
 
