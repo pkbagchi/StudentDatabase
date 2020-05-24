@@ -94,7 +94,7 @@ def home(request):
     else:
         query = UserInfo.objects.filter(bol_field__iexact = 'True').order_by('-id')
         
-    paginator = Paginator(query, 1)  # Show 10 obj per page
+    paginator = Paginator(query, 5)  # Show 10 obj per page
 
     page = request.GET.get('page')
     query = paginator.get_page(page)
